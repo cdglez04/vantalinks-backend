@@ -1,11 +1,12 @@
 import json
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from django.middleware.csrf import get_token
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from urllib.parse import urlparse
@@ -38,9 +39,10 @@ def get_favicon(url):
             return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23999' d='M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z'/%3E%3C/svg%3E"
 
 @ensure_csrf_cookie
-@api_view(["GET"])
 def get_csrf_token(request):
-    return Response({"detail": "CSRF cookie set"})
+    csrf_token = get_token(request)
+    response = JsonResponse({'csrfToken': csrf_token})
+    return response
 
 @api_view(['POST'])
 def login_user(request):
