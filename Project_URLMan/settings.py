@@ -74,8 +74,7 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = config('CSRF_COOKIE_SAMESITE', default='Lax')
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_DOMAIN = '.onrender.com'
-SESSION_COOKIE_DOMAIN = '.onrender.com'
+
 
 ROOT_URLCONF = 'Project_URLMan.urls'
 
