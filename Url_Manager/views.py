@@ -40,7 +40,9 @@ def get_favicon(url):
 
 @ensure_csrf_cookie
 def get_csrf_token(request):
-    return JsonResponse({'detail': "CSRF cookie set"})
+    csrf_token = get_token(request)
+    response = JsonResponse({'csrfToken': csrf_token})
+    return response
      
 
 @api_view(['POST'])
