@@ -40,9 +40,8 @@ def get_favicon(url):
 
 @ensure_csrf_cookie
 def get_csrf_token(request):
-    csrf_token = get_token(request)
-    response = JsonResponse({'csrfToken': csrf_token})
-    return response
+    return JsonResponse({'detail': "CSRF cookie set"})
+     
 
 @api_view(['POST'])
 def login_user(request):
@@ -106,6 +105,8 @@ def register_user(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_user(request):
+    if not request.user:
+        return Response({"error":"You need to be logged in to log out."}, status=status.HTTP_403_FORBIDDEN)
     print(request.user)
     logout(request)
     print(request.user)
